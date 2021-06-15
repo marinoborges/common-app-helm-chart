@@ -36,20 +36,44 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.app.containerPort }}
+              containerPort: {{ .Values.service.internalPort }}
               protocol: TCP
 {{- range $index, $port := .Values.app.extraPorts }}
             - containerPort: {{ $port.port }}
               name: {{ $port.name }}
 {{- end }}
           livenessProbe:
+  {{- if eq .Values.livenessProbe.probeType "httpGet" }}
             httpGet:
-              path: /
-              port: http
+              path: {{ .Values.livenessProbe.path }}
+              scheme: {{ .Values.livenessProbe.scheme }}
+              port: {{ .Values.livenessProbe.port | default .Values.service.internalPort }}
+  {{- else if eq .Values.livenessProbe.probeType "tcpSocket" }}
+            tcpSocket:
+              port: {{ .Values.livenessProbe.port | default .Values.service.internalPort }}
+  {{- else if eq .Values.livenessProbe.probeType "exec" }}
+            exec:
+              command:
+  {{ toYaml .Values.livenessProbe.command | indent 14 }}
+  {{- end }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
           readinessProbe:
+  {{- if eq .Values.readinessProbe.probeType "httpGet" }}
             httpGet:
-              path: /
-              port: http
+              path: {{ .Values.readinessProbe.path }}
+              scheme: {{ .Values.readinessProbe.scheme }}
+              port: {{ .Values.readinessProbe.port | default .Values.service.internalPort }}
+  {{- else if eq .Values.readinessProbe.probeType "tcpSocket" }}
+            tcpSocket:
+              port: {{ .Values.readinessProbe.port | default .Values.service.internalPort }}
+  {{- else if eq .Values.readinessProbe.probeType "exec" }}
+            exec:
+              command:
+  {{ toYaml .Values.readinessProbe.command | indent 14 }}
+  {{- end }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if or .Values.app.envVarsCM .Values.app.envVarsSecret }}
