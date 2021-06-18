@@ -3,6 +3,16 @@ entries:
   common-app:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2021-06-18T20:06:31.115048679Z"
+    description: A Helm chart for Kubernetes
+    digest: 8ce8d90506c367384cedda70786f3471f19edd10a057d7fed9c502727911dfd3
+    name: common-app
+    type: application
+    urls:
+    - https://github.com/marinoborges/helm-charts/releases/download/common-app-0.2.1/common-app-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2021-06-15T02:07:22.039452431Z"
     description: A Helm chart for Kubernetes
     digest: e42b388688bb0c4eed10e06e900b9cf6e74eb09618d413a653ad89dd048c4019
