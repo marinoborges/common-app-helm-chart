@@ -35,9 +35,9 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: {{ .Values.service.internalPort }}
-              protocol: TCP
+            - name: {{ .Values.app.portname }}
+              containerPort: {{ .Values.app.port }}
+              protocol: {{ .Values.app.protocol }}
 {{- range $index, $port := .Values.app.extraPorts }}
             - containerPort: {{ $port.port }}
               name: {{ $port.name }}
@@ -47,10 +47,10 @@ spec:
             httpGet:
               path: {{ .Values.livenessProbe.path }}
               scheme: {{ .Values.livenessProbe.scheme }}
-              port: {{ .Values.livenessProbe.port | default .Values.service.internalPort }}
+              port: {{ .Values.livenessProbe.port | default .Values.app.port }}
   {{- else if eq .Values.livenessProbe.probeType "tcpSocket" }}
             tcpSocket:
-              port: {{ .Values.livenessProbe.port | default .Values.service.internalPort }}
+              port: {{ .Values.livenessProbe.port | default .Values.app.port }}
   {{- else if eq .Values.livenessProbe.probeType "exec" }}
             exec:
               command:
@@ -63,10 +63,10 @@ spec:
             httpGet:
               path: {{ .Values.readinessProbe.path }}
               scheme: {{ .Values.readinessProbe.scheme }}
-              port: {{ .Values.readinessProbe.port | default .Values.service.internalPort }}
+              port: {{ .Values.readinessProbe.port | default .Values.app.port }}
   {{- else if eq .Values.readinessProbe.probeType "tcpSocket" }}
             tcpSocket:
-              port: {{ .Values.readinessProbe.port | default .Values.service.internalPort }}
+              port: {{ .Values.readinessProbe.port | default .Values.app.port }}
   {{- else if eq .Values.readinessProbe.probeType "exec" }}
             exec:
               command:
