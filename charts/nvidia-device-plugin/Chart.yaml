@@ -13,3 +13,4 @@ dependencies:
     version: "0.16.6"
     condition: nfd.enabled,gfd.enabled
     repository: https://kubernetes-sigs.github.io/node-feature-discovery/charts
+
