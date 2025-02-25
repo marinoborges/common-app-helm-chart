@@ -44,6 +44,24 @@ entries:
   nvidia-device-plugin:
   - apiVersion: v2
     appVersion: 0.17.0
+    created: "2025-02-25T15:33:15.354868864Z"
+    dependencies:
+    - alias: nfd
+      condition: nfd.enabled,gfd.enabled
+      name: node-feature-discovery
+      repository: https://kubernetes-sigs.github.io/node-feature-discovery/charts
+      version: 0.16.6
+    description: A Helm chart for the nvidia-device-plugin on Kubernetes
+    digest: 0184e47f0b14c986f03bf661f543843ddbac1a342e6e350918a40c45f500691e
+    home: https://github.com/NVIDIA/k8s-device-plugin
+    kubeVersion: '>= 1.10.0-0'
+    name: nvidia-device-plugin
+    type: application
+    urls:
+    - https://github.com/marinoborges/helm-charts/releases/download/nvidia-device-plugin-0.17.3/nvidia-device-plugin-0.17.3.tgz
+    version: 0.17.3
+  - apiVersion: v2
+    appVersion: 0.17.0
     created: "2025-02-25T15:25:27.355665006Z"
     dependencies:
     - alias: nfd
